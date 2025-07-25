@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/mathisfeltrin/coreframe-ui/raw/main/public/logo-coreframe.png" alt="CoreFrameUI Logo" width="400" />
+</p>
+
 # CoreFrameUI
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
