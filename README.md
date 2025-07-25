@@ -1,5 +1,7 @@
 # CoreFrameUI
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 **CoreFrameUI** is a lightweight and elegant React component library, built with TypeScript and Tailwind CSS.  
 Designed for scalability, reusability, and a consistent developer experience across your projects.
 
@@ -90,4 +92,4 @@ The build outputs:
 
 ## 📝 License
 
-MIT © [Your Name](https://github.com/yourusername)
+MIT © [Mathis Feltrin](https://github.com/mathisfeltrin)
