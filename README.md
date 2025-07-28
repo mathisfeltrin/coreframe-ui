@@ -65,7 +65,7 @@ import "coreframe-ui/dist/style.css";
 ## 🛠️ Development
 
 ```bash
-git clone https://github.com/yourusername/coreframe-ui.git
+git clone https://github.com/mathisfeltrin/coreframe-ui.git
 cd coreframe-ui
 npm install
 npm run dev
