@@ -139,4 +139,82 @@ describe("Input", () => {
     expect(input).toHaveAttribute("maxLength", "10");
     expect(input).toBeRequired();
   });
+
+  describe("Password Toggle", () => {
+    it("does not show toggle button by default for password input", () => {
+      render(<Input type="password" />);
+      expect(screen.queryByLabelText(/show password/i)).not.toBeInTheDocument();
+      expect(screen.queryByLabelText(/hide password/i)).not.toBeInTheDocument();
+    });
+
+    it("shows toggle button when showPasswordToggle is true", () => {
+      render(<Input type="password" showPasswordToggle />);
+      expect(screen.getByLabelText("Show password")).toBeInTheDocument();
+    });
+
+    it("does not show toggle for non-password inputs", () => {
+      render(<Input type="text" showPasswordToggle />);
+      expect(screen.queryByLabelText(/show password/i)).not.toBeInTheDocument();
+    });
+
+    it("toggles password visibility when button is clicked", async () => {
+      const user = userEvent.setup();
+      render(<Input type="password" showPasswordToggle placeholder="Password" />);
+
+      const input = screen.getByPlaceholderText("Password");
+      const toggleButton = screen.getByLabelText("Show password");
+
+      // Initially password type
+      expect(input).toHaveAttribute("type", "password");
+
+      // Click to show password
+      await user.click(toggleButton);
+      expect(input).toHaveAttribute("type", "text");
+      expect(screen.getByLabelText("Hide password")).toBeInTheDocument();
+
+      // Click to hide password again
+      await user.click(screen.getByLabelText("Hide password"));
+      expect(input).toHaveAttribute("type", "password");
+      expect(screen.getByLabelText("Show password")).toBeInTheDocument();
+    });
+
+    it("maintains input value when toggling visibility", async () => {
+      const user = userEvent.setup();
+      render(<Input type="password" showPasswordToggle />);
+
+      const input = screen.getByRole("textbox") as HTMLInputElement;
+      const toggleButton = screen.getByLabelText("Show password");
+
+      // Type password
+      await user.type(input, "secret123");
+      expect(input.value).toBe("secret123");
+
+      // Toggle visibility
+      await user.click(toggleButton);
+      expect(input.value).toBe("secret123");
+
+      // Toggle back
+      await user.click(screen.getByLabelText("Hide password"));
+      expect(input.value).toBe("secret123");
+    });
+
+    it("prioritizes password toggle over right icon", () => {
+      render(
+        <Input
+          type="password"
+          showPasswordToggle
+          rightIcon={<span data-testid="right-icon">✓</span>}
+        />
+      );
+
+      expect(screen.getByLabelText("Show password")).toBeInTheDocument();
+      expect(screen.queryByTestId("right-icon")).not.toBeInTheDocument();
+    });
+
+    it("adds proper padding when toggle is present", () => {
+      render(<Input type="password" showPasswordToggle />);
+      const input = screen.getByRole("textbox");
+      expect(input).toHaveClass("pr-10");
+    });
+  });
 });

@@ -63,7 +63,14 @@ function App() {
               <Input placeholder="Enter text..." />
               <Input label="Email" type="email" placeholder="you@example.com" />
               <Input
-                label="Password"
+                label="Password (with toggle)"
+                type="password"
+                placeholder="Enter your password"
+                showPasswordToggle
+                helperText="Click the eye icon to show/hide password"
+              />
+              <Input
+                label="Password (without toggle)"
                 type="password"
                 placeholder="Enter your password"
               />
