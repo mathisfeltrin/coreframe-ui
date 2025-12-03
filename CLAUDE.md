@@ -89,6 +89,12 @@ npm run build        # Build library (tsc + vite) → dist/
 npm run lint         # ESLint check
 npm run preview      # Preview built library
 
+# Testing
+npm test             # Run tests in watch mode
+npm run test:run     # Run tests once (CI mode)
+npm run test:ui      # Open Vitest UI in browser
+npm run test:coverage # Run tests with coverage report
+
 # Publishing (when ready)
 npm run publish      # Build + publish to npm
 ```
@@ -98,10 +104,51 @@ npm run publish      # Build + publish to npm
 1. Create component in `lib/ComponentName/ComponentName.tsx`
 2. Define props interface with TypeScript
 3. Use design tokens from `lib/styles.css` (`bg-brand-600`, `text-neutral-900`, etc.)
-4. Export from `lib/index.ts`: `export { ComponentName } from "./ComponentName/ComponentName";`
-5. Test in `src/App.tsx` by importing from `"coreframe-ui"`
-6. Run `npm run dev` to see it in demo app
-7. Build with `npm run build` to generate `dist/`
+4. Create test file `lib/ComponentName/ComponentName.test.tsx`
+5. Write tests for all variants, sizes, states, and interactions
+6. Run `npm test` to verify tests pass
+7. Export from `lib/index.ts`: `export { ComponentName } from "./ComponentName/ComponentName";`
+8. Test in `src/App.tsx` by importing from `"coreframe-ui"`
+9. Run `npm run dev` to see it in demo app
+10. Build with `npm run build` to generate `dist/`
+
+## Testing
+
+Tests are written using **Vitest** and **React Testing Library**.
+
+**Test file location:** Place tests next to components (e.g., `lib/Button/Button.test.tsx`)
+
+**Test structure:**
+```tsx
+import { describe, it, expect, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { Component } from "./Component";
+
+describe("Component", () => {
+  it("renders correctly", () => {
+    render(<Component>Test</Component>);
+    expect(screen.getByText("Test")).toBeInTheDocument();
+  });
+
+  it("handles interactions", async () => {
+    const handleClick = vi.fn();
+    const user = userEvent.setup();
+    render(<Component onClick={handleClick} />);
+    await user.click(screen.getByRole("button"));
+    expect(handleClick).toHaveBeenCalled();
+  });
+});
+```
+
+**What to test:**
+- Component renders with correct content
+- All variants apply correct styles
+- All sizes apply correct classes
+- Disabled state works correctly
+- Click/interaction handlers are called
+- Accessibility (ARIA attributes, keyboard navigation)
+- Edge cases (empty props, invalid values)
 
 ## Component Roadmap
 
